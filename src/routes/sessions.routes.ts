@@ -16,7 +16,7 @@ sessionsRouter.post('/', async (request, response) => {
 
   delete user.password;
 
-  return response.json({ user, token});
+  return response.json({ user, token });
 });
 
 export default sessionsRouter;

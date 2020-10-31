@@ -12,22 +12,25 @@ interface TokenPayload {
   sub: string;
 }
 
-export default function ensureAuthenticated(request: Request, response: Response, next: NextFunction): void {
-
+export default function ensureAuthenticated(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
   const authHeader = request.headers.authorization;
 
-  if (!authHeader){
+  if (!authHeader) {
     throw new AppError('JWT token is missing!', 401);
   }
 
-  const [,token] = authHeader.split(' ');
+  const [, token] = authHeader.split(' ');
 
   try {
     const decoded = verify(token, authConfig.jwt.secret);
 
     const { sub } = decoded as TokenPayload;
 
-    request.user = { 
+    request.user = {
       id: sub,
     };
 
@@ -35,5 +38,4 @@ export default function ensureAuthenticated(request: Request, response: Response
   } catch {
     throw new AppError('Invalid JWT token!', 401);
   }
-
 }
